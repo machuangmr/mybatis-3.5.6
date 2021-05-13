@@ -29,6 +29,9 @@ import org.apache.ibatis.reflection.property.PropertyTokenizer;
 /**
  * @author Clinton Begin
  */
+
+// Reflector可以对一些简单的类进行反射操作
+// 但是对于一些比较复杂的类，比如说类中的属性是其他的类型，这个使用就需要使用到MetaClass, 实现对复杂属性的解析操作。
 public class MetaClass {
 
   private final ReflectorFactory reflectorFactory;

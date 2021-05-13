@@ -47,6 +47,9 @@ import org.apache.ibatis.reflection.property.PropertyNamer;
  *
  * @author Clinton Begin
  */
+
+// 对JDK的反射做了一层封装，可以更方便的使用，可以理解为反射工具箱，
+// 可以做为一个工具类来使用，在我们的代码中也可以正常使用。
 public class Reflector {
 
   private final Class<?> type;

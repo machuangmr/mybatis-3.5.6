@@ -44,6 +44,8 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
 
   @Override
   public SqlSession openSession() {
+    // 程序访问一次数据库需要建立会话，每次需要sqlSessionFactory调用openSession方法，获取一个数据库的会话，
+    // 首先会获取默认的数据库类型->simple
     return openSessionFromDataSource(configuration.getDefaultExecutorType(), null, false);
   }
 
@@ -91,8 +93,11 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
     Transaction tx = null;
     try {
       final Environment environment = configuration.getEnvironment();
+      // 1、获取事务工厂
       final TransactionFactory transactionFactory = getTransactionFactoryFromEnvironment(environment);
+      // 2、创建事务，默认是不提交事务，事务的隔离级
       tx = transactionFactory.newTransaction(environment.getDataSource(), level, autoCommit);
+      // 根据事务以及默认的执行器类型，创建执行器。用于执行sql语句操作。
       final Executor executor = configuration.newExecutor(tx, execType);
       return new DefaultSqlSession(configuration, executor, autoCommit);
     } catch (Exception e) {

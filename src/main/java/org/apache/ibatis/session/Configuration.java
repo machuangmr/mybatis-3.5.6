@@ -671,10 +671,13 @@ public class Configuration {
     if (ExecutorType.BATCH == executorType) {
       executor = new BatchExecutor(this, transaction);
     } else if (ExecutorType.REUSE == executorType) {
+      // 针对statement对象做缓存，每条sql语句创建的statement对象做一个缓存
       executor = new ReuseExecutor(this, transaction);
     } else {
+      // 默认的执行器，SimpleExecutor，每次sql操作都会创建一个Statement对象
       executor = new SimpleExecutor(this, transaction);
     }
+    // 二级缓存开关,setting中的cacheEnabled 默认是true。
     if (cacheEnabled) {
       executor = new CachingExecutor(executor);
     }
@@ -842,6 +845,7 @@ public class Configuration {
   }
 
   public <T> T getMapper(Class<T> type, SqlSession sqlSession) {
+    // mapperRegistry中注册的有Mapper的相关信息，在解析映射文件时，调用过addMapper方法。
     return mapperRegistry.getMapper(type, sqlSession);
   }
 

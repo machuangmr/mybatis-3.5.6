@@ -294,6 +294,7 @@ public class MapperBuilderAssistant extends BaseBuilder {
     }
 
     MappedStatement statement = statementBuilder.build();
+    // 最关键的一步，将mappedStatement对象添加到configuration对象中。MappedStatement对象就是对应一个crud标签
     configuration.addMappedStatement(statement);
     return statement;
   }

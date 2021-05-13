@@ -58,6 +58,7 @@ public class MapperMethod {
     Object result;
     switch (command.getType()) {
       case INSERT: {
+        // 将用户传入的实参和指定参数名称关联起来
         Object param = method.convertArgsToSqlCommandParam(args);
         result = rowCountResult(sqlSession.insert(command.getName(), param));
         break;
@@ -74,6 +75,7 @@ public class MapperMethod {
       }
       case SELECT:
         if (method.returnsVoid() && method.hasResultHandler()) {
+          // 返回值为空且ResultSet通过ResultHandler处理的方法
           executeWithResultHandler(sqlSession, args);
           result = null;
         } else if (method.returnsMany()) {

@@ -33,6 +33,11 @@ import org.apache.ibatis.session.SqlSession;
  * @author Clinton Begin
  * @author Eduardo Macarron
  */
+
+/**
+ *
+ * Mapper接口对应的代理对象MapperProxy。当调用mapper接口中的方法的时候，实际上就是调用的MapperProxy的Invoke方法。
+ */
 public class MapperProxy<T> implements InvocationHandler, Serializable {
 
   private static final long serialVersionUID = -4724728412955527868L;
@@ -77,6 +82,7 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
   }
 
   @Override
+  // 这里invoke调用目标类的方法
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     try {
       if (Object.class.equals(method.getDeclaringClass())) {
@@ -149,6 +155,7 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args, SqlSession sqlSession) throws Throwable {
+     // sql执行的真正起点
       return mapperMethod.execute(sqlSession, args);
     }
   }

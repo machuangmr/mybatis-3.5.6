@@ -89,6 +89,8 @@ public class SqlSessionFactoryBuilder {
   }
 
   public SqlSessionFactory build(Configuration config) {
+    // sqlSessionFactory （用于创建sqlSession）在整个生命周期中只创建一次就行。
+    // build 构建者模式，用于创建复杂的对象，也是一种封装的思想
     return new DefaultSqlSessionFactory(config);
   }
 
