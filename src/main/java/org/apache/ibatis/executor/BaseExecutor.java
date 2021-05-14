@@ -151,8 +151,10 @@ public abstract class BaseExecutor implements Executor {
       queryStack++;
       list = resultHandler == null ? (List<E>) localCache.getObject(key) : null;
       if (list != null) {
+        // 直接从一级缓存中拿去
         handleLocallyCachedOutputParameters(ms, key, parameter, boundSql);
       } else {
+        // 从数据库中获取数据
         list = queryFromDatabase(ms, parameter, rowBounds, resultHandler, key, boundSql);
       }
     } finally {
@@ -196,6 +198,7 @@ public abstract class BaseExecutor implements Executor {
     if (closed) {
       throw new ExecutorException("Executor was closed.");
     }
+    // 生成缓存的key
     CacheKey cacheKey = new CacheKey();
     cacheKey.update(ms.getId());
     cacheKey.update(rowBounds.getOffset());
@@ -320,6 +323,7 @@ public abstract class BaseExecutor implements Executor {
 
   private <E> List<E> queryFromDatabase(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql) throws SQLException {
     List<E> list;
+    // localCache 本质就是一个HashMap，问题：这里存入HashMap的时候，为什么要添加一个占位符呢？然后又删掉？然后又put进去？
     localCache.putObject(key, EXECUTION_PLACEHOLDER);
     try {
       list = doQuery(ms, parameter, rowBounds, resultHandler, boundSql);

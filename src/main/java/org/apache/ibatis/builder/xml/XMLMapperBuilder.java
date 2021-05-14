@@ -113,7 +113,9 @@ public class XMLMapperBuilder extends BaseBuilder {
         throw new BuilderException("Mapper's namespace cannot be empty");
       }
       builderAssistant.setCurrentNamespace(namespace);
+      // 添加缓存对象，如果我们希望多个namespace 公用同一个二级缓存，就可以使用。
       cacheRefElement(context.evalNode("cache-ref"));
+      // 解析cache标签，添加缓存对象。
       cacheElement(context.evalNode("cache"));
       parameterMapElement(context.evalNodes("/mapper/parameterMap"));
       resultMapElements(context.evalNodes("/mapper/resultMap"));
@@ -202,6 +204,7 @@ public class XMLMapperBuilder extends BaseBuilder {
 
   private void cacheElement(XNode context) {
     if (context != null) {
+      // 读取我们在cache标签中添加的信息。读取type类型，默认是perpetual
       String type = context.getStringAttribute("type", "PERPETUAL");
       Class<? extends Cache> typeClass = typeAliasRegistry.resolveAlias(type);
       String eviction = context.getStringAttribute("eviction", "LRU");

@@ -106,6 +106,7 @@ public class CacheBuilder {
     return cache;
   }
 
+  // 设置默认的实现。
   private void setDefaultImplementations() {
     if (implementation == null) {
       implementation = PerpetualCache.class;
@@ -117,6 +118,7 @@ public class CacheBuilder {
 
   private Cache setStandardDecorators(Cache cache) {
     try {
+      // 将缓存对象通过多个装饰器，包装起来。
       MetaObject metaCache = SystemMetaObject.forObject(cache);
       if (size != null && metaCache.hasSetter("size")) {
         metaCache.setValue("size", size);

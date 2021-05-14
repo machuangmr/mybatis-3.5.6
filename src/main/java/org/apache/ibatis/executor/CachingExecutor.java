@@ -92,9 +92,11 @@ public class CachingExecutor implements Executor {
   @Override
   public <E> List<E> query(MappedStatement ms, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql)
       throws SQLException {
+    // 这里其实就是namespace中的cache标签，如果 有cache标签，则开始二级缓存，
     Cache cache = ms.getCache();
     if (cache != null) {
       flushCacheIfRequired(ms);
+      // isUseCache，可以显示的关闭某一个namespace下的某一个查询标签。isUseCache="false"
       if (ms.isUseCache() && resultHandler == null) {
         ensureNoOutParams(ms, boundSql);
         @SuppressWarnings("unchecked")
