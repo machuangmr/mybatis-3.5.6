@@ -63,6 +63,12 @@ public class ManagedTransaction implements Transaction {
     return this.connection;
   }
 
+  /**
+   * 如果在使用数据连接的时候，将类型配置为managed，则事务不回起作用，
+   * 因commit，rollback方法都是未作实现的，他们会将事务交给第三方容器进行处理。
+   * @throws SQLException
+   */
+
   @Override
   public void commit() throws SQLException {
     // Does nothing
